@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BTQ Kelas 5 SD - Belajar Hukum Bacaan Ghunnah</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Amiri (Font Arab Klasik yang Indah) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <!-- Font Awesome untuk Ikon Ramah Anak -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            arabic: ['Amiri', 'serif'],
+          },
+          colors: {
+            emerald: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            amber: {
+              50: '#fffbeb',
+              100: '#fef3c7',
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            },
+            cream: '#fdfbf7',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #fdfbf7;
+      background-image: radial-gradient(#d1fae5 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    .arabic-text {
+      font-family: 'Amiri', serif;
+      direction: rtl;
+      line-height: 2.1;
+    }
+
+    /* Animasi denyut ketukan harakat */
+    @keyframes pulseBeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+    .beat-active {
+      animation: pulseBeat 0.6s ease-in-out;
+      background-color: #f59e0b !important;
+      color: white !important;
+      border-color: #d97706 !important;
+    }
+
+    /* Animasi kartu game */
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    .float-anim {
+      animation: floatCard 3s ease-in-out infinite;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #10b981;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Toast / Message Box Pengganti Alert -->
+  <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+
+  <!-- Header & Navigasi Utama -->
+  <header class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-800 text-white shadow-lg sticky top-0 z-40 border-b-4 border-amber-400">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+        <!-- Brand / Logo -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-amber-400 text-emerald-950 flex items-center justify-center font-bold text-2xl shadow-md border-2 border-white">
+              <i class="fa-solid fa-book-quran"></i>
+            </div>
+            <div>
+              <span class="inline-block text-[11px] font-bold uppercase tracking-wider bg-emerald-900/70 text-amber-300 px-2.5 py-0.5 rounded-full border border-emerald-500/40">
+                BTQ Kelas 5 SD • Kurikulum Merdeka
+              </span>
+              <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white leading-tight">
+                Sahabat Tajwid: <span class="text-amber-300">Hukum Ghunnah</span>
+              </h1>
+            </div>
+          </div>
+
+          <!-- Tombol Audio Efek Global -->
+          <button id="toggle-sound-btn" onclick="toggleAudioSystem()" class="md:hidden p-2.5 rounded-xl bg-emerald-900/60 hover:bg-emerald-900 text-amber-300 border border-emerald-500/30 transition" title="Suara Efek">
+            <i id="sound-icon-mobile" class="fa-solid fa-volume-high"></i>
+          </button>
+        </div>
+
+        <!-- Menu Tab Navigasi -->
+        <nav class="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 md:pb-0 no-scrollbar" aria-label="Menu Utama">
+          <button onclick="switchTab('beranda')" id="tab-beranda" class="nav-btn active flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all bg-amber-400 text-emerald-950 shadow">
+            <i class="fa-solid fa-house"></i>
+            <span>TP & KKTP</span>
+          </button>
+          <button onclick="switchTab('materi')" id="tab-materi" class="nav-btn flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all bg-emerald-900/50 text-emerald-50 hover:bg-emerald-600">
+            <i class="fa-solid fa-mosque"></i>
+            <span>Materi Ghunnah</span>
+          </button>
+          <button onclick="switchTab('game')" id="tab-game" class="nav-btn flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all bg-emerald-900/50 text-emerald-50 hover:bg-emerald-600">
+            <i class="fa-solid fa-gamepad"></i>
+            <span>Game Edukasi</span>
+          </button>
+          <button onclick="switchTab('kuis')" id="tab-kuis" class="nav-btn flex items-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all bg-emerald-900/50 text-emerald-50 hover:bg-emerald-600">
+            <i class="fa-solid fa-pen-to-square"></i>
+            <span>Kuis 25 Soal</span>
+          </button>
+          <button onclick="toggleAudioSystem()" class="hidden md:flex items-center justify-center w-10 h-10 rounded-xl bg-emerald-900/60 hover:bg-emerald-900 text-amber-300 border border-emerald-500/30 transition ml-1" title="Aktifkan/Matikan Efek Suara">
+            <i id="sound-icon-desktop" class="fa-solid fa-volume-high"></i>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- Konten Utama -->
+  <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6 sm:py-8">
+
+    <!-- ========================================================= -->
+    <!-- HALAMAN 1: BERANDA & PERANGKAT PEMBELAJARAN (TP & KKTP)   -->
+    <!-- ========================================================= -->
+    <section id="page-beranda" class="page-section space-y-6">
+      <!-- Hero Banner Ramah Anak -->
+      <div class="bg-gradient-to-br from-emerald-700 via-emerald-800 to-teal-900 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border-2 border-emerald-600">
+        <div class="absolute -right-8 -bottom-8 opacity-10 text-9xl pointer-events-none">
+          <i class="fa-solid fa-star-and-crescent"></i>
+        </div>
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+          <div class="lg:col-span-2 space-y-3">
+            <div class="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-300/40 text-amber-200 px-3 py-1 rounded-full text-xs font-semibold">
+              <i class="fa-solid fa-sparkles"></i> Assalamu'alaikum Warahmatullahi Wabarakatuh
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold leading-tight">
+              Mari Belajar Membaca Al-Qur'an dengan Tartil & Berdengung Indah!
+            </h2>
+            <p class="text-emerald-100 text-sm sm:text-base leading-relaxed">
+              Selamat datang di media belajar interaktif <strong>Baca Tulis Qur'an (BTQ) Kelas 5</strong>. Hari ini kita akan mengenal hukum bacaan <strong>Ghunnah</strong>, berlatih ketukan dengung 2 harakat, bermain game tajwid, dan mengerjakan 25 soal evaluasi!
+            </p>
+            <div class="pt-2 flex flex-wrap gap-3">
+              <button onclick="switchTab('materi')" class="px-5 py-3 rounded-2xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-extrabold text-sm shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                <i class="fa-solid fa-book-open"></i> Mulai Belajar Materi
+              </button>
+              <button onclick="switchTab('game')" class="px-5 py-3 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-bold text-sm border border-white/30 transition flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-amber-300"></i> Coba Mini-Game
+              </button>
+            </div>
+          </div>
+
+          <!-- Kartu Sorotan Huruf Ghunnah -->
+          <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5 text-center shadow-inner">
+            <p class="text-xs uppercase tracking-wider text-amber-300 font-bold mb-2">Huruf Utama Ghunnah</p>
+            <div class="flex items-center justify-center gap-6 my-2">
+              <div class="bg-white text-emerald-900 w-24 h-24 rounded-2xl flex flex-col items-center justify-center shadow-md border-b-4 border-amber-400">
+                <span class="arabic-text text-5xl font-bold leading-none">نّ</span>
+                <span class="text-[11px] font-bold text-emerald-700 mt-1">Nun Tasydid</span>
+              </div>
+              <div class="bg-white text-emerald-900 w-24 h-24 rounded-2xl flex flex-col items-center justify-center shadow-md border-b-4 border-amber-400">
+                <span class="arabic-text text-5xl font-bold leading-none">مّ</span>
+                <span class="text-[11px] font-bold text-emerald-700 mt-1">Mim Tasydid</span>
+              </div>
+            </div>
+            <p class="text-xs text-emerald-100 mt-2">Dibaca mendengung dari pangkal hidung selama <strong>2 Harakat</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Grid Perangkat Pembelajaran: TP & KKTP -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Tujuan Pembelajaran (TP) -->
+        <div class="lg:col-span-5 bg-white rounded-3xl p-6 shadow-md border border-emerald-100 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-bullseye"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-extrabold text-emerald-900">Tujuan Pembelajaran (TP)</h3>
+                <p class="text-xs text-slate-500">Capaian Kompetensi Siswa Kelas 5 SD</p>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100 flex gap-3 items-start">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                  <strong>Memahami Konsep:</strong> Peserta didik mampu menjelaskan pengertian hukum bacaan <em>Ghunnah</em> secara bahasa dan istilah dengan benar.
+                </p>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100 flex gap-3 items-start">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                  <strong>Mengidentifikasi Huruf:</strong> Peserta didik mampu menemukan dan membedakan huruf <strong>Nun bertasydid (<span class="arabic-text text-lg">نّ</span>)</strong> dan <strong>Mim bertasydid (<span class="arabic-text text-lg">مّ</span>)</strong> dalam ayat-ayat Al-Qur'an.
+                </p>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-100 flex gap-3 items-start">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                  <strong>Mempraktikkan Bacaan:</strong> Peserta didik mampu melafalkan bacaan Ghunnah dengan suara dengung yang jelas dari pangkal hidung selama <strong>2 harakat (1 alif)</strong>.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+            <span><i class="fa-solid fa-layer-group text-emerald-600 mr-1"></i> Fase C • Kelas V</span>
+            <span><i class="fa-solid fa-clock text-amber-500 mr-1"></i> Alokasi: 2 JP</span>
+          </div>
+        </div>
+
+        <!-- Kriteria Ketercapaian Tujuan Pembelajaran (KKTP) -->
+        <div class="lg:col-span-7 bg-white rounded-3xl p-6 shadow-md border border-emerald-100">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-lg font-bold">
+                <i class="fa-solid fa-award"></i>
+              </div>
+              <div>
+                <h3 class="text-lg font-extrabold text-emerald-900">Kriteria Ketercapaian (KKTP)</h3>
+                <p class="text-xs text-slate-500">Rubrik Interval Nilai & Predikat Ketuntasan Belajar</p>
+              </div>
+            </div>
+            <span class="inline-flex items-center gap-1.5 text-xs font-bold bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full self-start sm:self-auto">
+              <i class="fa-solid fa-check-circle"></i> Tuntas Minimal: 76 (Baik)
+            </span>
+          </div>
+
+          <!-- Tabel KKTP Responsif -->
+          <div class="overflow-x-auto rounded-2xl border border-slate-200">
+            <table class="w-full text-left border-collapse text-sm">
+              <thead>
+                <tr class="bg-emerald-800 text-white text-xs uppercase tracking-wider">
+                  <th class="py-3 px-4 font-bold">Interval Nilai</th>
+                  <th class="py-3 px-4 font-bold">Predikat</th>
+                  <th class="py-3 px-4 font-bold">Deskripsi Kriteria & Tindak Lanjut</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="bg-rose-50/60 hover:bg-rose-50 transition">
+                  <td class="py-3 px-4 font-extrabold text-rose-700 whitespace-nowrap">0 – 60</td>
+                  <td class="py-3 px-4">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200">Perlu Bimbingan</span>
+                  </td>
+                  <td class="py-3 px-4 text-xs text-slate-700 leading-relaxed">
+                    Belum memahami pengertian ghunnah dan belum tepat membedakan huruf <span class="arabic-text text-base font-bold">نّ</span> / <span class="arabic-text text-base font-bold">مّ</span>. <strong>Tindak lanjut:</strong> Remedial dan bimbingan intensif pelafalan.
+                  </td>
+                </tr>
+                <tr class="bg-amber-50/60 hover:bg-amber-50 transition">
+                  <td class="py-3 px-4 font-extrabold text-amber-700 whitespace-nowrap">61 – 75</td>
+                  <td class="py-3 px-4">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">Cukup</span>
+                  </td>
+                  <td class="py-3 px-4 text-xs text-slate-700 leading-relaxed">
+                    Mampu mengenali sebagian huruf ghunnah, namun durasi dengung 2 harakat masih sering terlewat. <strong>Tindak lanjut:</strong> Remedial pada bagian yang belum dikuasai.
+                  </td>
+                </tr>
+                <tr class="bg-emerald-50/50 hover:bg-emerald-50 transition">
+                  <td class="py-3 px-4 font-extrabold text-emerald-700 whitespace-nowrap">76 – 85</td>
+                  <td class="py-3 px-4">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Baik (Tuntas)</span>
+                  </td>
+                  <td class="py-3 px-4 text-xs text-slate-700 leading-relaxed">
+                    Sudah mampu menjelaskan pengertian, menemukan huruf ghunnah pada ayat, dan membaca dengung 2 harakat dengan benar. <strong>Tindak lanjut:</strong> Lanjut ke materi berikutnya.
+                  </td>
+                </tr>
+                <tr class="bg-teal-50/70 hover:bg-teal-50 transition">
+                  <td class="py-3 px-4 font-extrabold text-teal-800 whitespace-nowrap">86 – 100</td>
+                  <td class="py-3 px-4">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-teal-600 text-white shadow-sm">Sangat Baik (Tuntas)</span>
+                  </td>
+                  <td class="py-3 px-4 text-xs text-slate-700 leading-relaxed">
+                    Sangat fasih mengidentifikasi dan melafalkan bacaan ghunnah dengan tartil dan konsisten di berbagai surat Al-Qur'an. <strong>Tindak lanjut:</strong> Pengayaan & tutor sebaya.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- HALAMAN 2: MATERI PEMBELAJARAN INTERAKTIF (GHUNNAH)       -->
+    <!-- ========================================================= -->
+    <section id="page-materi" class="page-section hidden space-y-6">
+      <!-- Judul Halaman Materi -->
+      <div class="bg-white rounded-3xl p-6 shadow-md border border-emerald-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-amber-600 bg-amber-100 px-3 py-1 rounded-full">Pelajaran Inti BTQ</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-900 mt-2">Mengenal Hukum Bacaan Ghunnah</h2>
+          <p class="text-sm text-slate-600 mt-1">Pelajari pengertian, huruf, cara membaca, dan dengarkan simulasi ketukan dengungnya!</p>
+        </div>
+        <div class="flex items-center gap-2 bg-emerald-50 px-4 py-3 rounded-2xl border border-emerald-200">
+          <i class="fa-solid fa-lightbulb text-amber-500 text-xl"></i>
+          <p class="text-xs text-emerald-900 font-medium">
+            <strong>Kunci Ingat:</strong> Setiap bertemu <span class="arabic-text text-lg font-bold text-emerald-700">نّ</span> atau <span class="arabic-text text-lg font-bold text-emerald-700">مّ</span>, tahan dengungnya <strong>2 ketukan</strong>!
+          </p>
+        </div>
+      </div>
+
+      <!-- 3 Kartu Konsep Utama -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Kartu 1: Pengertian -->
+        <div class="bg-white rounded-3xl p-6 shadow-md border-t-4 border-emerald-600">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-book-open-reader"></i>
+          </div>
+          <h3 class="text-lg font-extrabold text-emerald-950 mb-2">1. Pengertian Ghunnah</h3>
+          <ul class="space-y-2.5 text-sm text-slate-700">
+            <li class="bg-slate-50 p-3 rounded-xl">
+              <span class="font-bold text-emerald-700 block text-xs uppercase">Menurut Bahasa:</span>
+              Berdengung atau suara sengau yang keluar dari pangkal hidung (<em>Al-Khaisyum</em>).
+            </li>
+            <li class="bg-slate-50 p-3 rounded-xl">
+              <span class="font-bold text-emerald-700 block text-xs uppercase">Menurut Istilah Tajwid:</span>
+              Suara dengung yang jelas dan nyaring yang menyertai huruf <strong>Nun bertasydid (<span class="arabic-text text-lg">نّ</span>)</strong> dan <strong>Mim bertasydid (<span class="arabic-text text-lg">مّ</span>)</strong>.
+            </li>
+          </ul>
+        </div>
+
+        <!-- Kartu 2: Huruf Ghunnah -->
+        <div class="bg-white rounded-3xl p-6 shadow-md border-t-4 border-amber-500">
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-font"></i>
+          </div>
+          <h3 class="text-lg font-extrabold text-emerald-950 mb-2">2. Huruf-Huruf Ghunnah</h3>
+          <p class="text-sm text-slate-600 mb-4">Huruf Ghunnah Musyaddadah hanya ada <strong>2 huruf</strong> saja, yaitu:</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-gradient-to-b from-amber-50 to-amber-100/60 border-2 border-amber-300 rounded-2xl p-4 text-center">
+              <div class="arabic-text text-5xl font-bold text-emerald-900">نّ</div>
+              <div class="font-bold text-xs text-emerald-900 mt-2">Nun Bertasydid</div>
+              <div class="text-[11px] text-slate-600">Contoh: <span class="arabic-text text-base font-bold">إِنَّ</span></div>
+            </div>
+            <div class="bg-gradient-to-b from-amber-50 to-amber-100/60 border-2 border-amber-300 rounded-2xl p-4 text-center">
+              <div class="arabic-text text-5xl font-bold text-emerald-900">مّ</div>
+              <div class="font-bold text-xs text-emerald-900 mt-2">Mim Bertasydid</div>
+              <div class="text-[11px] text-slate-600">Contoh: <span class="arabic-text text-base font-bold">عَمَّ</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kartu 3: Cara Membaca & Simulator Ketukan -->
+        <div class="bg-white rounded-3xl p-6 shadow-md border-t-4 border-teal-600 flex flex-col justify-between">
+          <div>
+            <div class="w-12 h-12 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center text-xl mb-4">
+              <i class="fa-solid fa-wave-square"></i>
+            </div>
+            <h3 class="text-lg font-extrabold text-emerald-950 mb-2">3. Cara Membaca (2 Harakat)</h3>
+            <p class="text-sm text-slate-700 leading-relaxed mb-3">
+              Suara ditahan dan didengungkan melalui pangkal hidung selama <strong>2 harakat (1 alif)</strong>, kira-kira sepanjang 2 ketukan jari atau saat menggenggam lalu membuka jari.
+            </p>
+          </div>
+
+          <!-- Simulator Ketukan Interaktif -->
+          <div class="bg-emerald-900 text-white p-4 rounded-2xl text-center">
+            <p class="text-xs text-amber-300 font-bold mb-2">Latihan Ketukan Dengung (2 Harakat):</p>
+            <div class="flex justify-center gap-3 mb-3">
+              <div id="beat-1" class="w-12 h-12 rounded-full border-2 border-emerald-400 bg-emerald-800 flex items-center justify-center font-extrabold text-lg transition-all">1</div>
+              <div id="beat-2" class="w-12 h-12 rounded-full border-2 border-emerald-400 bg-emerald-800 flex items-center justify-center font-extrabold text-lg transition-all">2</div>
+            </div>
+            <button onclick="playHarokatSimulator()" class="w-full py-2.5 px-4 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-extrabold text-xs shadow transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-play"></i> Bunyikan Ketukan 1 - 2
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contoh Bacaan Ghunnah dalam Al-Qur'an -->
+      <div class="bg-white rounded-3xl p-6 shadow-md border border-emerald-100">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5">
+          <div>
+            <h3 class="text-xl font-extrabold text-emerald-900">Contoh Bacaan Ghunnah dalam Al-Qur'an</h3>
+            <p class="text-xs text-slate-500">Klik tombol <strong>"Dengar & Ketuk"</strong> pada setiap contoh untuk melatih durasi bacaan dengung.</p>
+          </div>
+          <span class="text-xs font-semibold bg-amber-100 text-amber-800 px-3 py-1.5 rounded-xl">
+            <i class="fa-solid fa-highlighter mr-1"></i> Huruf berwarna merah/emas dibaca dengung
+          </span>
+        </div>
+
+        <div id="examples-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Diisi otomatis via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- HALAMAN 3: GAME EDUKASI INTERAKTIF                        -->
+    <!-- ========================================================= -->
+    <section id="page-game" class="page-section hidden space-y-6">
+      <div class="bg-gradient-to-r from-emerald-800 to-teal-800 rounded-3xl p-6 text-white shadow-lg flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider bg-amber-400 text-emerald-950 px-3 py-1 rounded-full">Mini-Game Tajwid</span>
+          <h2 class="text-2xl sm:text-3xl font-extrabold mt-2">Tangkap & Pilah Ghunnah!</h2>
+          <p class="text-sm text-emerald-100 mt-1">Uji kejelian matamu! Tentukan apakah potongan ayat yang muncul mengandung hukum bacaan <strong>Ghunnah</strong> (<span class="arabic-text text-lg">نّ</span> / <span class="arabic-text text-lg">مّ</span>) atau <strong>Bukan Ghunnah</strong>.</p>
+        </div>
+        <div class="flex items-center gap-3 bg-emerald-950/50 px-4 py-3 rounded-2xl border border-emerald-500/30">
+          <div class="text-center px-2">
+            <div class="text-[10px] uppercase text-amber-300 font-bold">Skor Tertinggi</div>
+            <div id="game-highscore" class="text-2xl font-extrabold text-white">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arena Game -->
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-emerald-100 max-w-3xl mx-auto text-center relative overflow-hidden">
+        <!-- Layar Awal Game -->
+        <div id="game-start-screen" class="py-6 space-y-5">
+          <div class="w-20 h-20 rounded-3xl bg-amber-100 text-amber-500 flex items-center justify-center text-4xl mx-auto shadow-md float-anim">
+            <i class="fa-solid fa-trophy"></i>
+          </div>
+          <h3 class="text-2xl font-extrabold text-emerald-950">Siap Bermain Detektif Tajwid?</h3>
+          <p class="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+            Kamu memiliki <strong>3 Nyawa (Hati)</strong>. Jawab dengan cepat dan tepat untuk menaikkan level dan mengumpulkan poin setinggi mungkin!
+          </p>
+          <div class="flex flex-wrap justify-center gap-3 text-xs font-semibold text-slate-600">
+            <span class="bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-xl"><i class="fa-solid fa-check text-emerald-600 mr-1"></i> Benar: +10 Poin</span>
+            <span class="bg-rose-50 border border-rose-200 px-3 py-1.5 rounded-xl"><i class="fa-solid fa-heart-crack text-rose-500 mr-1"></i> Salah: -1 Nyawa</span>
+          </div>
+          <button onclick="startGame()" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 text-white font-extrabold text-base shadow-lg transition transform hover:scale-105">
+            <i class="fa-solid fa-play mr-2"></i> Mulai Permainan Sekarang
+          </button>
+        </div>
+
+        <!-- Layar Bermain Aktif -->
+        <div id="game-play-screen" class="hidden space-y-6">
+          <!-- Status Bar Game -->
+          <div class="flex items-center justify-between bg-slate-50 px-4 py-3 rounded-2xl border border-slate-200">
+            <div class="flex items-center gap-1.5" id="game-lives">
+              <!-- Hati nyawa -->
+            </div>
+            <div class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 text-xs font-extrabold">
+              Level <span id="game-level">1</span>
+            </div>
+            <div class="text-sm font-extrabold text-emerald-800">
+              Skor: <span id="game-score" class="text-lg text-emerald-600">0</span>
+            </div>
+          </div>
+
+          <!-- Kartu Soal Game -->
+          <div id="game-card" class="bg-gradient-to-b from-emerald-50 to-cream border-2 border-emerald-200 rounded-3xl p-8 shadow-inner transition-all">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Perhatikan Lafaz Berikut:</span>
+            <div id="game-arabic-word" class="arabic-text text-5xl sm:text-6xl font-bold text-emerald-950 my-4 select-none">
+              إِنَّا أَعْطَيْنَاكَ
+            </div>
+            <div id="game-latin-hint" class="text-sm font-medium text-slate-500 italic">
+              (Innaa a'thainaaka)
+            </div>
+          </div>
+
+          <!-- Umpan Balik Instan Game -->
+          <div id="game-feedback" class="h-8 flex items-center justify-center text-sm font-bold"></div>
+
+          <!-- Tombol Pilihan Game -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button onclick="answerGame(true)" class="py-4 px-6 rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-extrabold text-base shadow-md border-b-4 border-emerald-800 transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-circle-check text-xl text-amber-300"></i>
+              <span>BACAAN GHUNNAH</span>
+            </button>
+            <button onclick="answerGame(false)" class="py-4 px-6 rounded-2xl bg-amber-500 hover:bg-amber-400 active:scale-95 text-emerald-950 font-extrabold text-base shadow-md border-b-4 border-amber-700 transition flex items-center justify-center gap-2">
+              <i class="fa-solid fa-circle-xmark text-xl text-emerald-900"></i>
+              <span>BUKAN GHUNNAH</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Layar Game Over -->
+        <div id="game-over-screen" class="hidden py-6 space-y-5">
+          <div class="w-20 h-20 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-4xl mx-auto">
+            <i class="fa-solid fa-medal"></i>
+          </div>
+          <h3 class="text-2xl font-extrabold text-emerald-950">Permainan Selesai!</h3>
+          <p id="game-over-msg" class="text-sm text-slate-600">Hebat! Kamu sudah berlatih membedakan bacaan Ghunnah.</p>
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 max-w-xs mx-auto">
+            <div class="text-xs text-slate-500 uppercase font-bold">Skor Akhir Kamu</div>
+            <div id="game-final-score" class="text-4xl font-extrabold text-emerald-700 my-1">0</div>
+            <div class="text-xs text-emerald-800 font-semibold">Level Tercapai: <span id="game-final-level">1</span></div>
+          </div>
+          <div class="flex flex-wrap justify-center gap-3">
+            <button onclick="startGame()" class="px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm shadow transition">
+              <i class="fa-solid fa-rotate-right mr-1"></i> Main Lagi
+            </button>
+            <button onclick="switchTab('kuis')" class="px-6 py-3 rounded-2xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-bold text-sm shadow transition">
+              <i class="fa-solid fa-pen-to-square mr-1"></i> Lanjut ke Kuis 25 Soal
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- HALAMAN 4: EVALUASI / KUIS 25 SOAL & RAPOR OTOMATIS       -->
+    <!-- ========================================================= -->
+    <section id="page-kuis" class="page-section hidden space-y-6">
+
+      <!-- 4A. FORM IDENTITAS SISWA SEBELUM KUIS -->
+      <div id="quiz-intro-card" class="bg-white rounded-3xl p-6 sm:p-8 shadow-lg border border-emerald-100 max-w-2xl mx-auto">
+        <div class="text-center mb-6">
+          <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-700 flex items-center justify-center text-3xl mx-auto mb-3">
+            <i class="fa-solid fa-file-signature"></i>
+          </div>
+          <span class="text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-3 py-1 rounded-full">Evaluasi Sumatif BTQ</span>
+          <h2 class="text-2xl font-extrabold text-emerald-950 mt-2">Kuis 25 Soal Hukum Ghunnah</h2>
+          <p class="text-sm text-slate-600 mt-1">Isi data dirimu terlebih dahulu sebelum memulai pengerjaan soal.</p>
+        </div>
+
+        <form onsubmit="startQuiz(event)" class="space-y-4">
+          <div>
+            <label for="student-name" class="block text-xs font-bold uppercase text-slate-700 mb-1.5">Nama Lengkap Siswa <span class="text-rose-500">*</span></label>
+            <input type="text" id="student-name" required placeholder="Contoh: Ahmad Fauzan" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none text-sm font-medium" />
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="student-class" class="block text-xs font-bold uppercase text-slate-700 mb-1.5">Kelas <span class="text-rose-500">*</span></label>
+              <select id="student-class" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none text-sm font-medium bg-white">
+                <option value="5A">Kelas 5A</option>
+                <option value="5B">Kelas 5B</option>
+                <option value="5C">Kelas 5C</option>
+                <option value="5 (Umum)">Kelas 5 SD</option>
+              </select>
+            </div>
+            <div>
+              <label for="quiz-timer-opt" class="block text-xs font-bold uppercase text-slate-700 mb-1.5">Mode Waktu</label>
+              <select id="quiz-timer-opt" class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none text-sm font-medium bg-white">
+                <option value="25">Timer 25 Menit (Standar)</option>
+                <option value="0">Tanpa Batas Waktu (Santai)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-xs text-emerald-900 space-y-1">
+            <p class="font-bold"><i class="fa-solid fa-circle-info text-emerald-600 mr-1"></i> Petunjuk Pengerjaan:</p>
+            <ul class="list-disc list-inside space-y-0.5 text-emerald-800">
+              <li>Jumlah soal sebanyak <strong>25 butir pilihan ganda</strong> (skor maksimal 100).</li>
+              <li>Setiap 1 jawaban benar bernilai <strong>4 poin</strong>.</li>
+              <li>Nilai ketuntasan minimal (KKTP) adalah <strong>76 (Predikat Baik)</strong>.</li>
+            </ul>
+          </div>
+
+          <button type="submit" class="w-full py-4 rounded-2xl bg-emerald-700 hover:bg-emerald-600 text-white font-extrabold text-base shadow-lg transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-rocket"></i> Mulai Kerjakan 25 Soal
+          </button>
+        </form>
+      </div>
+
+      <!-- 4B. AREA PENGERJAAN KUIS AKTIF -->
+      <div id="quiz-active-area" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Kolom Soal Utama (Kiri) -->
+        <div class="lg:col-span-8 bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-emerald-100 flex flex-col justify-between">
+          <div>
+            <!-- Header Info Siswa & Timer -->
+            <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-100">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 font-extrabold text-xs">
+                  Soal <span id="q-current-num">1</span> / 25
+                </span>
+                <span id="q-student-badge" class="text-xs font-semibold text-slate-500"></span>
+              </div>
+              <div id="q-timer-box" class="px-3 py-1 rounded-full bg-amber-100 text-amber-800 font-extrabold text-xs flex items-center gap-1.5">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span id="q-timer-display">25:00</span>
+              </div>
+            </div>
+
+            <!-- Pertanyaan -->
+            <div id="q-text-container" class="mb-6">
+              <p id="q-question-text" class="text-base sm:text-lg font-bold text-slate-800 leading-relaxed"></p>
+              <div id="q-arabic-box" class="hidden mt-4 p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-center">
+                <span id="q-arabic-text" class="arabic-text text-3xl sm:text-4xl font-bold text-emerald-950"></span>
+              </div>
+            </div>
+
+            <!-- Pilihan Jawaban A, B, C, D -->
+            <div id="q-options-list" class="space-y-3">
+              <!-- Diisi via JS -->
+            </div>
+          </div>
+
+          <!-- Navigasi Sebelumnya / Selanjutnya -->
+          <div class="mt-8 pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+            <button id="btn-prev-q" onclick="prevQuestion()" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition disabled:opacity-40">
+              <i class="fa-solid fa-arrow-left mr-1"></i> Sebelumnya
+            </button>
+            <button id="btn-next-q" onclick="nextQuestion()" class="px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs sm:text-sm transition">
+              Selanjutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+            </button>
+            <button id="btn-submit-quiz" onclick="confirmSubmitQuiz()" class="hidden px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-emerald-950 font-extrabold text-xs sm:text-sm shadow transition">
+              <i class="fa-solid fa-paper-plane mr-1"></i> Selesai & Lihat Nilai
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel Navigasi Nomor Soal 1-25 (Kanan) -->
+        <div class="lg:col-span-4 bg-white rounded-3xl p-6 shadow-md border border-emerald-100 flex flex-col justify-between">
+          <div>
+            <h3 class="text-sm font-extrabold text-emerald-900 uppercase tracking-wider mb-1">Navigasi Nomor Soal</h3>
+            <p class="text-xs text-slate-500 mb-4">Terjawab: <strong id="q-answered-count" class="text-emerald-700">0</strong> dari 25 soal</p>
+
+            <div id="q-nav-grid" class="grid grid-cols-5 gap-2">
+              <!-- Tombol 1-25 via JS -->
+            </div>
+
+            <div class="mt-5 pt-4 border-t border-slate-100 flex flex-wrap gap-3 text-[11px] text-slate-600">
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-emerald-600 inline-block"></span> Sudah Dijawab</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded border-2 border-amber-500 bg-amber-50 inline-block"></span> Sedang Dibuka</span>
+              <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded bg-slate-100 border border-slate-300 inline-block"></span> Belum Dijawab</span>
+            </div>
+          </div>
+
+          <button onclick="confirmSubmitQuiz()" class="mt-6 w-full py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-extrabold text-xs shadow transition">
+            <i class="fa-solid fa-check-double mr-1"></i> Kumpulkan Jawaban Sekarang
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Konfirmasi Pengumpulan (Pengganti confirm() bawaan browser) -->
+      <div id="submit-confirm-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-6 max-w-md w-full shadow-2xl border-2 border-emerald-100 text-center space-y-4">
+          <div class="w-14 h-14 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-2xl mx-auto">
+            <i class="fa-solid fa-circle-question"></i>
+          </div>
+          <h3 class="text-xl font-extrabold text-emerald-950">Kumpulkan Jawaban Kuis?</h3>
+          <p id="confirm-modal-text" class="text-sm text-slate-600">Pastikan semua soal telah diperiksa dengan teliti.</p>
+          <div class="flex gap-3 pt-2">
+            <button onclick="closeConfirmModal()" class="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm">
+              Periksa Lagi
+            </button>
+            <button onclick="finishQuiz()" class="flex-1 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-extrabold text-sm shadow">
+              Ya, Kumpulkan!
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4C. HALAMAN HASIL & RAPOR OTOMATIS KKTP -->
+      <div id="quiz-result-area" class="hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-emerald-100">
+          <!-- Kop Rapor -->
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-200">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">Laporan Hasil Belajar (Rapor BTQ)</span>
+              <h2 class="text-2xl sm:text-3xl font-extrabold text-emerald-950 mt-2">Hasil Evaluasi Hukum Ghunnah</h2>
+              <p class="text-sm text-slate-600 mt-1">
+                Nama Siswa: <strong id="res-student-name" class="text-slate-900"></strong> • Kelas: <strong id="res-student-class" class="text-slate-900"></strong>
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button onclick="resetQuiz()" class="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs shadow transition flex items-center gap-1.5">
+                <i class="fa-solid fa-rotate-right"></i> Ulangi Kuis
+              </button>
+              <button onclick="toggleReviewSection()" class="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-emerald-950 font-extrabold text-xs shadow transition flex items-center gap-1.5">
+                <i class="fa-solid fa-list-check"></i> Lihat Pembahasan 25 Soal
+              </button>
+            </div>
+          </div>
+
+          <!-- Ringkasan Nilai & Status KKTP -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6 my-6 items-center">
+            <!-- Skor Lingkaran -->
+            <div class="md:col-span-4 bg-gradient-to-br from-emerald-800 to-teal-900 text-white rounded-3xl p-6 text-center shadow-md">
+              <div class="text-xs uppercase tracking-wider text-amber-300 font-bold">Nilai Akhir</div>
+              <div id="res-final-score" class="text-6xl font-extrabold my-2 text-white">0</div>
+              <div class="text-xs text-emerald-200">Skala 0 – 100</div>
+            </div>
+
+            <!-- Detail Statistik & Predikat KKTP -->
+            <div class="md:col-span-8 space-y-4">
+              <div class="grid grid-cols-3 gap-3 text-center">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3">
+                  <div class="text-xs text-emerald-700 font-semibold">Jawaban Benar</div>
+                  <div id="res-correct-count" class="text-2xl font-extrabold text-emerald-800 mt-1">0</div>
+                </div>
+                <div class="bg-rose-50 border border-rose-200 rounded-2xl p-3">
+                  <div class="text-xs text-rose-700 font-semibold">Jawaban Salah</div>
+                  <div id="res-wrong-count" class="text-2xl font-extrabold text-rose-800 mt-1">0</div>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3">
+                  <div class="text-xs text-amber-700 font-semibold">KKTP Minimal</div>
+                  <div class="text-2xl font-extrabold text-amber-800 mt-1">76</div>
+                </div>
+              </div>
+
+              <!-- Kotak Status KKTP Otomatis -->
+              <div id="res-kktp-box" class="p-4 rounded-2xl border-2">
+                <div class="flex items-center justify-between gap-2 mb-1">
+                  <span class="text-xs font-bold uppercase tracking-wider">Status Ketercapaian (KKTP):</span>
+                  <span id="res-kktp-badge" class="px-3 py-1 rounded-full text-xs font-extrabold"></span>
+                </div>
+                <p id="res-kktp-desc" class="text-sm font-medium leading-relaxed"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pembahasan Lengkap 25 Soal -->
+        <div id="quiz-review-container" class="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-emerald-100 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div>
+              <h3 class="text-xl font-extrabold text-emerald-950">Ulasan & Kunci Jawaban (25 Soal)</h3>
+              <p class="text-xs text-slate-500">Pelajari kembali pembahasan di bawah ini agar pemahamanmu semakin kuat.</p>
+            </div>
+          </div>
+          <div id="review-list" class="space-y-4">
+            <!-- Diisi otomatis via JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-emerald-950 text-emerald-200 py-5 px-4 mt-12 border-t-4 border-amber-400 text-center text-xs">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p class="font-semibold text-white">Media Pembelajaran Interaktif BTQ Kelas 5 SD • Materi Ghunnah</p>
+      <p class="text-emerald-400">Belajar Al-Qur'an Jadi Mudah, Seru, dan Menyenangkan</p>
+    </div>
+  </footer>
+
+  <!-- ========================================================= -->
+  <!-- JAVASCRIPT LOGIKA APLIKASI, AUDIO, GAME & 25 SOAL KUIS    -->
+  <!-- ========================================================= -->
+  <script>
+    // -----------------------------------------------------------
+    // 1. SISTEM AUDIO WEB AUDIO API & SPEECH SYNTHESIS
+    // -----------------------------------------------------------
+    let audioEnabled = true;
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function toggleAudioSystem() {
+      audioEnabled = !audioEnabled;
+      const iconM = document.getElementById('sound-icon-mobile');
+      const iconD = document.getElementById('sound-icon-desktop');
+      const cls = audioEnabled ? 'fa-solid fa-volume-high' : 'fa-solid fa-volume-xmark text-rose-400';
+      if (iconM) iconM.className = cls;
+      if (iconD) iconD.className = cls;
+      showToast(audioEnabled ? 'Efek suara diaktifkan' : 'Efek suara dimatikan', 'info');
+    }
+
+    function playTone(freq, type = 'sine', duration = 0.25, delay = 0) {
+      if (!audioEnabled) return;
+      try {
+        const ctx = getAudioContext();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + delay);
+        gain.gain.setValueAtTime(0.18, ctx.currentTime + delay);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + delay + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(ctx.currentTime + delay);
+        osc.stop(ctx.currentTime + delay + duration);
+      } catch (e) {
+        // Abaikan jika browser memblokir autoplay audio
+      }
+    }
+
+    function playSuccessSound() {
+      playTone(523.25, 'sine', 0.15, 0);     // C5
+      playTone(659.25, 'sine', 0.15, 0.1);   // E5
+      playTone(783.99, 'sine', 0.3, 0.2);    // G5
+    }
+
+    function playErrorSound() {
+      playTone(240, 'triangle', 0.2, 0);
+      playTone(180, 'triangle', 0.3, 0.15);
+    }
+
+    function playBeatSound(beatNum) {
+      playTone(beatNum === 1 ? 440 : 587.33, 'sine', 0.25, 0);
+    }
+
+    // Simulator ketukan 2 harakat di halaman materi
+    function playHarokatSimulator() {
+      const b1 = document.getElementById('beat-1');
+      const b2 = document.getElementById('beat-2');
+      b1.classList.remove('beat-active');
+      b2.classList.remove('beat-active');
+
+      setTimeout(() => {
+        b1.classList.add('beat-active');
+        playBeatSound(1);
+      }, 50);
+
+      setTimeout(() => {
+        b1.classList.remove('beat-active');
+        b2.classList.add('beat-active');
+        playBeatSound(2);
+      }, 650);
+
+      setTimeout(() => {
+        b2.classList.remove('beat-active');
+      }, 1250);
+    }
+
+    // Toast Notification (Pengganti alert)
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const bgMap = {
+        success: 'bg-emerald-800 border-emerald-400 text-white',
+        error: 'bg-rose-700 border-rose-300 text-white',
+        info: 'bg-slate-800 border-amber-400 text-white'
+      };
+      toast.className = `${bgMap[type] || bgMap.info} border-l-4 px-4 py-3 rounded-xl shadow-lg text-xs font-bold flex items-center justify-between gap-2 pointer-events-auto transition-all transform translate-y-0 opacity-100`;
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+      }, 2800);
+    }
+
+    // -----------------------------------------------------------
+    // 2. NAVIGASI ANTAR TAB HALAMAN
+    // -----------------------------------------------------------
+    function switchTab(tabName) {
+      // Sembunyikan semua section
+      document.querySelectorAll('.page-section').forEach(sec => sec.classList.add('hidden'));
+      // Tampilkan target
+      const target = document.getElementById(`page-${tabName}`);
+      if (target) target.classList.remove('hidden');
+
+      // Update gaya tombol nav
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('bg-amber-400', 'text-emerald-950', 'shadow');
+        btn.classList.add('bg-emerald-900/50', 'text-emerald-50');
+      });
+      const activeBtn = document.getElementById(`tab-${tabName}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-emerald-900/50', 'text-emerald-50');
+        activeBtn.classList.add('bg-amber-400', 'text-emerald-950', 'shadow');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // -----------------------------------------------------------
+    // 3. DATA & RENDER CONTOH MATERI AL-QUR'AN
+    // -----------------------------------------------------------
+    const quranExamples = [
+      {
+        surah: "QS. An-Nas: 1",
+        arabicPrefix: "قُلْ أَعُوذُ بِرَبِّ ",
+        arabicHighlight: "النَّ",
+        arabicSuffix: "اسِ",
+        latin: "Qul a'uudzu birabbin-naas",
+        meaning: "Katakanlah: Aku berlindung kepada Tuhan (yang memelihara dan menguasai) manusia.",
+        reason: "Terdapat huruf Nun bertasydid (نّ) pada kata النَّاسِ, ditahan dengung 2 harakat."
+      },
+      {
+        surah: "QS. An-Naba: 1",
+        arabicPrefix: "",
+        arabicHighlight: "عَمَّ",
+        arabicSuffix: " يَتَسَاءَلُونَ",
+        latin: "'Amma yatasaa-aluun",
+        meaning: "Tentang apakah mereka saling bertanya-tanya?",
+        reason: "Terdapat huruf Mim bertasydid (مّ) pada kata عَمَّ, ditahan dengung 2 harakat."
+      },
+      {
+        surah: "QS. Al-Lahab: 4",
+        arabicPrefix: "وَامْرَأَتُهُ ",
+        arabicHighlight: "حَمَّ",
+        arabicSuffix: "الَةَ الْحَطَبِ",
+        latin: "Wamra-atuhuu hammaalatal hathab",
+        meaning: "Dan (begitu pula) istrinya, pembawa kayu bakar.",
+        reason: "Terdapat huruf Mim bertasydid (مّ) pada kata حَمَّالَةَ."
+      },
+      {
+        surah: "QS. Al-Kautsar: 1",
+        arabicPrefix: "",
+        arabicHighlight: "إِنَّا",
+        arabicSuffix: " أَعْطَيْنَاكَ الْكَوْثَرَ",
+        latin: "Innaa a'thainaakal kautsar",
+        meaning: "Sesungguhnya Kami telah memberikan kepadamu nikmat yang banyak.",
+        reason: "Terdapat huruf Nun bertasydid (نّ) pada kata إِنَّا."
+      },
+      {
+        surah: "QS. Al-Qari'ah: 9",
+        arabicPrefix: "فَأُ",
+        arabicHighlight: "مُّ",
+        arabicSuffix: "هُ هَاوِيَةٌ",
+        latin: "Fa-ummuhuu haawiyah",
+        meaning: "Maka tempat kembalinya adalah neraka Hawiyah.",
+        reason: "Terdapat huruf Mim bertasydid (مّ) pada kata فَأُمُّهُ."
+      },
+      {
+        surah: "QS. Al-Falaq: 4",
+        arabicPrefix: "وَمِن شَرِّ ",
+        arabicHighlight: "النَّ",
+        arabicSuffix: "فَّاثَاتِ فِي الْعُقَدِ",
+        latin: "Wa min syarrin-naffaatsaati fil 'uqad",
+        meaning: "Dan dari kejahatan wanita-wanita tukang sihir yang menghembus pada buhul-buhul.",
+        reason: "Terdapat huruf Nun bertasydid (نّ) pada kata النَّفَّاثَاتِ."
+      }
+    ];
+
+    function renderQuranExamples() {
+      const container = document.getElementById('examples-grid');
+      container.innerHTML = quranExamples.map((ex, idx) => `
+        <div class="rounded-2xl border border-emerald-100 bg-emerald-50/30 p-5 hover:border-emerald-300 transition flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-lg">${ex.surah}</span>
+              <button onclick="simulateExampleBeat(${idx}, this)" class="text-xs font-bold bg-amber-400 hover:bg-amber-300 text-emerald-950 px-3 py-1.5 rounded-xl shadow-sm transition flex items-center gap-1.5">
+                <i class="fa-solid fa-volume-high"></i> Simulasi Dengung
+              </button>
+            </div>
+            <div id="ex-arabic-${idx}" class="arabic-text text-3xl sm:text-4xl font-bold text-slate-900 my-3 text-right bg-white px-4 py-3 rounded-xl border border-slate-100">
+              ${ex.arabicPrefix}<span class="text-rose-600 bg-amber-100/80 px-1 rounded">${ex.arabicHighlight}</span>${ex.arabicSuffix}
+            </div>
+            <p class="text-xs font-bold text-emerald-800 italic mb-1">"${ex.latin}"</p>
+            <p class="text-xs text-slate-600 mb-2">Artinya: ${ex.meaning}</p>
+          </div>
+          <div class="text-[11px] bg-white p-2.5 rounded-xl border border-emerald-100 text-slate-700">
+            <i class="fa-solid fa-circle-info text-emerald-600 mr-1"></i> ${ex.reason}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function simulateExampleBeat(idx, btn) {
+      const box = document.getElementById(`ex-arabic-${idx}`);
+      box.classList.add('ring-4', 'ring-amber-400');
+      playBeatSound(1);
+
+      // Coba ucapkan dengan Web Speech API jika tersedia
+      if ('speechSynthesis' in window && audioEnabled) {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(quranExamples[idx].latin);
+        utter.lang = 'id-ID';
+        utter.rate = 0.8;
+        window.speechSynthesis.speak(utter);
+      }
+
+      setTimeout(() => {
+        playBeatSound(2);
+      }, 650);
+
+      setTimeout(() => {
+        box.classList.remove('ring-4', 'ring-amber-400');
+      }, 1300);
+    }
+
+    // -----------------------------------------------------------
+    // 4. LOGIKA MINI-GAME EDUKASI ("TANGKAP & PILAH GHUNNAH")
+    // -----------------------------------------------------------
+    const gameBank = [
+      { arabic: "إِنَّا أَعْطَيْنَاكَ", latin: "Innaa a'thainaaka", isGhunnah: true, reason: "Ada Nun bertasydid (نّ)" },
+      { arabic: "الْحَمْدُ لِلَّهِ", latin: "Alhamdulillaahi", isGhunnah: false, reason: "Tidak ada Nun/Mim bertasydid" },
+      { arabic: "عَمَّ يَتَسَاءَلُونَ", latin: "'Amma yatasaa-aluun", isGhunnah: true, reason: "Ada Mim bertasydid (مّ)" },
+      { arabic: "قُلْ هُوَ اللَّهُ أَحَدٌ", latin: "Qul huwallaahu ahad", isGhunnah: false, reason: "Tidak ada Nun/Mim bertasydid" },
+      { arabic: "مِنَ الْجِنَّةِ وَالنَّاسِ", latin: "Minal jinnati wannaas", isGhunnah: true, reason: "Ada Nun bertasydid (نّ)" },
+      { arabic: "فَأُمُّهُ هَاوِيَةٌ", latin: "Fa-ummuhuu haawiyah", isGhunnah: true, reason: "Ada Mim bertasydid (مّ)" },
+      { arabic: "بِسْمِ اللَّهِ الرَّحْمَٰنِ", latin: "Bismillaahir-rahmaan", isGhunnah: false, reason: "Tasydid pada huruf Lam & Ra, bukan Nun/Mim" },
+      { arabic: "حَمَّالَةَ الْحَطَبِ", latin: "Hammaalatal hathab", isGhunnah: true, reason: "Ada Mim bertasydid (مّ)" },
+      { arabic: "ثُمَّ كَلَّا سَيَعْلَمُونَ", latin: "Tsumma kallaa saya'lamuun", isGhunnah: true, reason: "Ada Mim bertasydid (مّ)" },
+      { arabic: "إِيَّاكَ نَعْبُدُ", latin: "Iyyaaka na'budu", isGhunnah: false, reason: "Tasydid pada huruf Ya (يّ), bukan Ghunnah" },
+      { arabic: "إِنَّ شَانِئَكَ", latin: "Inna syaani-aka", isGhunnah: true, reason: "Ada Nun bertasydid (نّ)" },
+      { arabic: "تَبَّتْ يَدَا أَبِي لَهَبٍ", latin: "Tabbat yadaa abii lahab", isGhunnah: false, reason: "Tasydid pada huruf Ba (بّ), bukan Ghunnah" }
+    ];
+
+    let gameState = {
+      score: 0,
+      lives: 3,
+      level: 1,
+      highScore: 0,
+      currentItem: null,
+      locked: false
+    };
+
+    function startGame() {
+      gameState.score = 0;
+      gameState.lives = 3;
+      gameState.level = 1;
+      gameState.locked = false;
+
+      document.getElementById('game-start-screen').classList.add('hidden');
+      document.getElementById('game-over-screen').classList.add('hidden');
+      document.getElementById('game-play-screen').classList.remove('hidden');
+
+      updateGameHUD();
+      nextGameItem();
+    }
+
+    function updateGameHUD() {
+      document.getElementById('game-score').textContent = gameState.score;
+      document.getElementById('game-level').textContent = gameState.level;
+      document.getElementById('game-highscore').textContent = gameState.highScore;
+
+      const livesEl = document.getElementById('game-lives');
+      let heartsHTML = '';
+      for (let i = 0; i < 3; i++) {
+        if (i < gameState.lives) {
+          heartsHTML += '<i class="fa-solid fa-heart text-rose-500 text-lg"></i>';
+        } else {
+          heartsHTML += '<i class="fa-regular fa-heart text-slate-300 text-lg"></i>';
+        }
+      }
+      livesEl.innerHTML = heartsHTML;
+    }
+
+    function nextGameItem() {
+      gameState.locked = false;
+      document.getElementById('game-feedback').innerHTML = '';
+      const card = document.getElementById('game-card');
+      card.className = 'bg-gradient-to-b from-emerald-50 to-cream border-2 border-emerald-200 rounded-3xl p-8 shadow-inner transition-all';
+
+      const randomIdx = Math.floor(Math.random() * gameBank.length);
+      gameState.currentItem = gameBank[randomIdx];
+
+      document.getElementById('game-arabic-word').textContent = gameState.currentItem.arabic;
+      document.getElementById('game-latin-hint').textContent = `(${gameState.currentItem.latin})`;
+    }
+
+    function answerGame(userSaysGhunnah) {
+      if (gameState.locked) return;
+      gameState.locked = true;
+
+      const isCorrect = (userSaysGhunnah === gameState.currentItem.isGhunnah);
+      const feedbackEl = document.getElementById('game-feedback');
+      const card = document.getElementById('game-card');
+
+      if (isCorrect) {
+        playSuccessSound();
+        gameState.score += 10;
+        gameState.level = Math.floor(gameState.score / 30) + 1;
+        if (gameState.score > gameState.highScore) {
+          gameState.highScore = gameState.score;
+        }
+        card.classList.add('border-emerald-500', 'bg-emerald-100/70');
+        feedbackEl.innerHTML = `<span class="text-emerald-700"><i class="fa-solid fa-circle-check mr-1"></i> Tepat! ${gameState.currentItem.reason}</span>`;
+      } else {
+        playErrorSound();
+        gameState.lives -= 1;
+        card.classList.add('border-rose-500', 'bg-rose-100/70');
+        feedbackEl.innerHTML = `<span class="text-rose-700"><i class="fa-solid fa-circle-xmark mr-1"></i> Kurang tepat! ${gameState.currentItem.reason}</span>`;
+      }
+
+      updateGameHUD();
+
+      setTimeout(() => {
+        if (gameState.lives <= 0) {
+          endGame();
+        } else {
+          nextGameItem();
+        }
+      }, 1300);
+    }
+
+    function endGame() {
+      document.getElementById('game-play-screen').classList.add('hidden');
+      document.getElementById('game-over-screen').classList.remove('hidden');
+      document.getElementById('game-final-score').textContent = gameState.score;
+      document.getElementById('game-final-level').textContent = gameState.level;
+    }
+
+    // -----------------------------------------------------------
+    // 5. BANK 25 SOAL PILIHAN GANDA & LOGIKA KUIS + RAPOR KKTP
+    // -----------------------------------------------------------
+    const quizQuestions = [
+      {
+        q: "Secara bahasa, kata 'Ghunnah' memiliki arti ....",
+        arabic: "",
+        options: ["Memantulkan suara", "Berdengung dari pangkal hidung", "Membaca dengan jelas", "Memasukkan huruf"],
+        answer: 1,
+        explanation: "Secara bahasa, Ghunnah berarti berdengung atau suara sengau yang keluar dari pangkal hidung (Al-Khaisyum)."
+      },
+      {
+        q: "Huruf hukum bacaan Ghunnah dalam ilmu tajwid berjumlah ....",
+        arabic: "",
+        options: ["2 huruf", "3 huruf", "4 huruf", "6 huruf"],
+        answer: 0,
+        explanation: "Huruf Ghunnah Musyaddadah hanya ada 2, yaitu Nun bertasydid (نّ) dan Mim bertasydid (مّ)."
+      },
+      {
+        q: "Manakah di bawah ini yang merupakan pasangan huruf Ghunnah?",
+        arabic: "",
+        options: ["بّ dan جّ", "نّ dan مّ", "لّ dan رّ", "يّ dan وّ"],
+        answer: 1,
+        explanation: "Huruf Ghunnah adalah Nun bertasydid (نّ) dan Mim bertasydid (مّ)."
+      },
+      {
+        q: "Cara membaca hukum bacaan Ghunnah yang benar adalah ditahan dan didengungkan selama ....",
+        arabic: "",
+        options: ["1 harakat", "2 harakat (1 alif)", "4 harakat", "6 harakat"],
+        answer: 1,
+        explanation: "Bacaan Ghunnah dibaca dengan cara ditahan dan didengungkan selama 2 harakat atau 1 alif."
+      },
+      {
+        q: "Suara dengung pada bacaan Ghunnah keluar dari ....",
+        arabic: "",
+        options: ["Ujung lidah", "Tenggorokan bawah", "Pangkal hidung (Al-Khaisyum)", "Dua bibir bagian luar"],
+        answer: 2,
+        explanation: "Makhraj (tempat keluar) suara Ghunnah adalah dari Al-Khaisyum (pangkal hidung)."
+      },
+      {
+        q: "Perhatikan lafaz berikut! Hukum bacaan pada kata yang bertasydid adalah ....",
+        arabic: "إِنَّ الْإِنسَانَ لَفِي خُسْرٍ",
+        options: ["Qalqalah Kubra", "Ghunnah", "Idzhar Halqi", "Mad Thabi'i"],
+        answer: 1,
+        explanation: "Pada kata إِنَّ terdapat huruf Nun bertasydid (نّ), sehingga hukum bacaannya adalah Ghunnah."
+      },
+      {
+        q: "Potongan ayat berikut ini mengandung hukum bacaan Ghunnah karena terdapat huruf ....",
+        arabic: "عَمَّ يَتَسَاءَلُونَ",
+        options: ["Nun sukun", "Mim sukun", "Mim bertasydid (مّ)", "Nun bertasydid (نّ)"],
+        answer: 2,
+        explanation: "Pada lafaz عَمَّ terdapat huruf Mim bertasydid (مّ) yang wajib dibaca dengung 2 harakat."
+      },
+      {
+        q: "Tanda baca yang menjadi ciri utama pada huruf Nun dan Mim dalam hukum Ghunnah adalah ....",
+        arabic: "",
+        options: ["Sukun ( ْ )", "Tasydid / Syiddah ( ّ )", "Tanwin ( ً )", "Dhammah ( ُ )"],
+        answer: 1,
+        explanation: "Ciri utama Ghunnah Musyaddadah adalah adanya tanda Tasydid ( ّ ) di atas huruf Nun atau Mim."
+      },
+      {
+        q: "Di bawah ini yang merupakan contoh bacaan Ghunnah pada huruf Mim bertasydid adalah ....",
+        arabic: "",
+        options: ["إِنَّا أَعْطَيْنَاكَ", "فَأُمُّهُ هَاوِيَةٌ", "قُلْ أَعُوذُ", "الْحَمْدُ لِلَّهِ"],
+        answer: 1,
+        explanation: "Lafaz فَأُمُّهُ memiliki huruf Mim bertasydid (مّ), sedangkan إِنَّا adalah Nun bertasydid."
+      },
+      {
+        q: "Perhatikan ayat pertama surat Al-Kautsar berikut. Kata yang dibaca Ghunnah adalah ....",
+        arabic: "إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ",
+        options: ["إِنَّا", "أَعْطَيْنَاكَ", "الْكَوْثَرَ", "Semua benar"],
+        answer: 0,
+        explanation: "Kata إِنَّا mengandung Nun bertasydid (نّ) sehingga dibaca Ghunnah."
+      },
+      {
+        q: "Dalam surat An-Nas ayat 1, lafaz yang mengandung bacaan Ghunnah adalah ....",
+        arabic: "قُلْ أَعُوذُ بِرَبِّ النَّاسِ",
+        options: ["قُلْ", "أَعُوذُ", "بِرَبِّ", "النَّاسِ"],
+        answer: 3,
+        explanation: "Pada kata النَّاسِ terdapat huruf Nun bertasydid (نّ)."
+      },
+      {
+        q: "Mengapa lafaz 'رَبِّ الْعَالَمِينَ' BUKAN termasuk hukum bacaan Ghunnah meskipun terdapat tanda tasydid?",
+        arabic: "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+        options: [
+          "Karena tasydid berada di akhir ayat",
+          "Karena huruf yang bertasydid adalah Ba (بّ), bukan Nun atau Mim",
+          "Karena dibaca pendek",
+          "Karena berada di awal surat"
+        ],
+        answer: 1,
+        explanation: "Hukum Ghunnah hanya berlaku jika tanda tasydid berada pada huruf Nun (نّ) atau Mim (مّ)."
+      },
+      {
+        q: "Panjang bacaan 2 harakat pada Ghunnah sama dengan ....",
+        arabic: "",
+        options: ["1 alif (2 ketukan)", "2 alif (4 ketukan)", "3 alif (6 ketukan)", "Setengah alif"],
+        answer: 0,
+        explanation: "Dalam ilmu tajwid, 2 harakat setara dengan 1 alif atau sekitar 2 ketukan sedang."
+      },
+      {
+        q: "Perhatikan lafaz dari QS. Al-Lahab ayat 4 berikut! Huruf Ghunnah terletak pada kata ....",
+        arabic: "وَامْرَأَتُهُ حَمَّالَةَ الْحَطَبِ",
+        options: ["وَامْرَأَتُهُ", "حَمَّالَةَ", "الْحَطَبِ", "Tidak ada Ghunnah"],
+        answer: 1,
+        explanation: "Pada kata حَمَّالَةَ terdapat huruf Mim bertasydid (مّ)."
+      },
+      {
+        q: "Manakah kelompok lafaz berikut yang SEMUANYA mengandung hukum bacaan Ghunnah?",
+        arabic: "",
+        options: [
+          "إِنَّ - ثُمَّ - عَمَّ",
+          "قُلْ - هُوَ - أَحَدٌ",
+          "إِيَّاكَ - تَبَّتْ - رَبِّ",
+          "مِنْ - عَنْ - لَنْ"
+        ],
+        answer: 0,
+        explanation: "Lafaz إِنَّ (نّ), ثُمَّ (مّ), dan عَمَّ (مّ) semuanya memiliki huruf Nun atau Mim bertasydid."
+      },
+      {
+        q: "Ketika membaca lafaz 'ثُمَّ كَلَّا سَيَعْلَمُونَ', cara membaca bagian 'ثُمَّ' yang tepat adalah ....",
+        arabic: "ثُمَّ كَلَّا سَيَعْلَمُونَ",
+        options: [
+          "Dibaca cepat tanpa ditahan",
+          "Dipantulkan dengan kuat",
+          "Ditahan dengungnya selama 2 ketukan sebelum masuk ke huruf kaf",
+          "Dibaca jelas tanpa dengung"
+        ],
+        answer: 2,
+        explanation: "Huruf Mim bertasydid pada ثُمَّ wajib ditahan dengungnya selama 2 harakat."
+      },
+      {
+        q: "Berapa jumlah hukum bacaan Ghunnah dalam potongan ayat berikut?",
+        arabic: "مِنَ الْجِنَّةِ وَالنَّاسِ",
+        options: ["1 bacaan Ghunnah", "2 bacaan Ghunnah", "3 bacaan Ghunnah", "Tidak ada"],
+        answer: 1,
+        explanation: "Terdapat 2 bacaan Ghunnah, yaitu pada kata الْجِنَّةِ (نّ) dan وَالنَّاسِ (نّ)."
+      },
+      {
+        q: "Perhatikan ayat berikut: 'وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ'. Lafaz النَّفَّاثَاتِ dibaca Ghunnah karena ....",
+        arabic: "وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ",
+        options: [
+          "Ada huruf Fa bertasydid",
+          "Ada huruf Nun bertasydid (نّ)",
+          "Ada huruf Qaf berharakat kasrah",
+          "Diakhiri huruf Dal sukun"
+        ],
+        answer: 1,
+        explanation: "Pada kata النَّفَّاثَاتِ terdapat huruf Nun bertasydid (نّ) setelah Alif Lam Syamsiyah."
+      },
+      {
+        q: "Apabila siswa membaca huruf Nun bertasydid (نّ) secara terburu-buru tanpa ditahan dengungnya, maka bacaannya ....",
+        arabic: "",
+        options: [
+          "Sudah sesuai kaidah tajwid",
+          "Kurang tepat karena menghilangkan hak dengung 2 harakat",
+          "Menjadi bacaan Qalqalah",
+          "Lebih baik daripada ditahan"
+        ],
+        answer: 1,
+        explanation: "Menahan dengung 2 harakat adalah sifat wajib bagi Nun dan Mim bertasydid."
+      },
+      {
+        q: "Lafaz 'مِمَّا' (mimmaa) mengandung hukum bacaan Ghunnah pada huruf ....",
+        arabic: "مِمَّا رَزَقْنَاهُمْ يُنفِقُونَ",
+        options: ["Mim pertama yang berharakat kasrah", "Mim kedua yang bertasydid (مّ)", "Alif di akhir kata", "Huruf Ra"],
+        answer: 1,
+        explanation: "Hukum Ghunnah terjadi pada huruf Mim kedua yang bertasydid (مّ)."
+      },
+      {
+        q: "Perhatikan ayat berikut! Manakah kata yang TIDAK mengandung Ghunnah?",
+        arabic: "إِنَّ اللَّهَ مَعَ الصَّابِرِينَ",
+        options: ["إِنَّ", "اللَّهَ", "مَعَ", "Jawaban B dan C benar"],
+        answer: 3,
+        explanation: "Hanya kata إِنَّ yang mengandung Ghunnah (نّ). Kata اللَّهَ dan مَعَ tidak memiliki Nun/Mim bertasydid."
+      },
+      {
+        q: "Dalam QS. Al-Fiil ayat 1: 'أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَابِ الْفِيلِ', apakah terdapat bacaan Ghunnah Musyaddadah?",
+        arabic: "أَلَمْ تَرَ كَيْفَ فَعَلَ رَبُّكَ بِأَصْحَابِ الْفِيلِ",
+        options: [
+          "Ada, pada kata أَلَمْ",
+          "Ada, pada kata رَبُّكَ",
+          "Tidak ada, karena tidak terdapat huruf نّ maupun مّ",
+          "Ada, pada kata الْفِيلِ"
+        ],
+        answer: 2,
+        explanation: "Pada ayat tersebut tidak terdapat huruf Nun bertasydid (نّ) maupun Mim bertasydid (مّ). Tasydid pada رَبُّكَ adalah huruf Ba."
+      },
+      {
+        q: "Lafaz 'جَهَنَّمَ' (Jahannama) memiliki huruf Ghunnah berupa ....",
+        arabic: "فِي نَارِ جَهَنَّمَ خَالِدِينَ فِيهَا",
+        options: ["Huruf Ha", "Huruf Nun bertasydid (نّ)", "Huruf Mim fathah", "Huruf Jim"],
+        answer: 1,
+        explanation: "Pada kata جَهَنَّمَ terdapat huruf Nun bertasydid (نّ) di tengah kata."
+      },
+      {
+        q: "Cara terbaik untuk memastikan suara Ghunnah keluar dari pangkal hidung adalah ....",
+        arabic: "",
+        options: [
+          "Membuka mulut selebar-lebarnya",
+          "Merasakan getaran ringan di area hidung saat menahan suara 'n' atau 'm'",
+          "Menahan napas sepenuhnya",
+          "Membaca dengan suara berbisik"
+        ],
+        answer: 1,
+        explanation: "Karena makhraj Ghunnah di pangkal hidung (Al-Khaisyum), akan terasa getaran ringan di hidung saat mendengung."
+      },
+      {
+        q: "Mempelajari dan mempraktikkan hukum bacaan Ghunnah saat membaca Al-Qur'an bertujuan agar bacaan kita menjadi ....",
+        arabic: "",
+        options: [
+          "Sangat cepat selesai",
+          "Tartil, indah, dan sesuai tuntunan Rasulullah SAW",
+          "Keras dan tergesa-gesa",
+          "Berbeda dari mushaf"
+        ],
+        answer: 1,
+        explanation: "Ilmu tajwid termasuk hukum Ghunnah dipelajari agar kita dapat membaca Al-Qur'an dengan tartil, benar, dan indah."
+      }
+    ];
+
+    let quizState = {
+      studentName: '',
+      studentClass: '',
+      currentIdx: 0,
+      userAnswers: new Array(25).fill(null),
+      timerSeconds: 0,
+      timerInterval: null
+    };
+
+    function startQuiz(e) {
+      e.preventDefault();
+      const nameInput = document.getElementById('student-name').value.trim();
+      const classInput = document.getElementById('student-class').value;
+      const timerMinutes = parseInt(document.getElementById('quiz-timer-opt').value, 10);
+
+      if (!nameInput) {
+        showToast('Silakan masukkan nama lengkapmu terlebih dahulu!', 'error');
+        return;
+      }
+
+      quizState.studentName = nameInput;
+      quizState.studentClass = classInput;
+      quizState.currentIdx = 0;
+      quizState.userAnswers = new Array(25).fill(null);
+
+      document.getElementById('quiz-intro-card').classList.add('hidden');
+      document.getElementById('quiz-result-area').classList.add('hidden');
+      document.getElementById('quiz-active-area').classList.remove('hidden');
+
+      document.getElementById('q-student-badge').textContent = `${quizState.studentName} (${quizState.studentClass})`;
+
+      // Setup Timer
+      if (quizState.timerInterval) clearInterval(quizState.timerInterval);
+      const timerBox = document.getElementById('q-timer-box');
+      if (timerMinutes > 0) {
+        timerBox.classList.remove('hidden');
+        quizState.timerSeconds = timerMinutes * 60;
+        updateTimerDisplay();
+        quizState.timerInterval = setInterval(() => {
+          quizState.timerSeconds--;
+          updateTimerDisplay();
+          if (quizState.timerSeconds <= 0) {
+            clearInterval(quizState.timerInterval);
+            showToast('Waktu habis! Jawaban otomatis dikumpulkan.', 'info');
+            finishQuiz();
+          }
+        }, 1000);
+      } else {
+        timerBox.classList.add('hidden');
+      }
+
+      renderNavGrid();
+      renderQuestion(0);
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(quizState.timerSeconds / 60);
+      const secs = quizState.timerSeconds % 60;
+      document.getElementById('q-timer-display').textContent =
+        `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function renderNavGrid() {
+      const grid = document.getElementById('q-nav-grid');
+      grid.innerHTML = quizQuestions.map((_, idx) => {
+        const isAnswered = quizState.userAnswers[idx] !== null;
+        const isCurrent = idx === quizState.currentIdx;
+        let cls = 'bg-slate-100 text-slate-700 border border-slate-300 hover:bg-slate-200';
+        if (isAnswered) {
+          cls = 'bg-emerald-600 text-white border border-emerald-700 font-extrabold';
+        }
+        if (isCurrent) {
+          cls += ' ring-2 ring-amber-400 ring-offset-1';
+        }
+        return `<button onclick="renderQuestion(${idx})" class="h-9 rounded-xl text-xs font-bold transition ${cls}">${idx + 1}</button>`;
+      }).join('');
+
+      const answeredCount = quizState.userAnswers.filter(a => a !== null).length;
+      document.getElementById('q-answered-count').textContent = answeredCount;
+    }
+
+    function renderQuestion(idx) {
+      quizState.currentIdx = idx;
+      const item = quizQuestions[idx];
+
+      document.getElementById('q-current-num').textContent = idx + 1;
+      document.getElementById('q-question-text').textContent = `${idx + 1}. ${item.q}`;
+
+      const arabicBox = document.getElementById('q-arabic-box');
+      if (item.arabic) {
+        arabicBox.classList.remove('hidden');
+        document.getElementById('q-arabic-text').textContent = item.arabic;
+      } else {
+        arabicBox.classList.add('hidden');
+      }
+
+      const letters = ['A', 'B', 'C', 'D'];
+      const optionsContainer = document.getElementById('q-options-list');
+      optionsContainer.innerHTML = item.options.map((opt, optIdx) => {
+        const isSelected = quizState.userAnswers[idx] === optIdx;
+        const baseCls = isSelected
+          ? 'bg-emerald-50 border-2 border-emerald-600 text-emerald-950 shadow-sm'
+          : 'bg-white border border-slate-200 hover:border-emerald-400 hover:bg-emerald-50/30 text-slate-700';
+        const badgeCls = isSelected
+          ? 'bg-emerald-600 text-white'
+          : 'bg-slate-100 text-slate-700';
+
+        return `
+          <button onclick="selectOption(${optIdx})" class="w-full text-left p-4 rounded-2xl transition flex items-center gap-3.5 ${baseCls}">
+            <span class="w-8 h-8 rounded-xl ${badgeCls} font-extrabold text-xs flex items-center justify-center shrink-0">${letters[optIdx]}</span>
+            <span class="text-sm font-semibold leading-snug">${opt}</span>
+          </button>
+        `;
+      }).join('');
+
+      // Atur tombol navigasi bawah
+      document.getElementById('btn-prev-q').disabled = (idx === 0);
+      if (idx === quizQuestions.length - 1) {
+        document.getElementById('btn-next-q').classList.add('hidden');
+        document.getElementById('btn-submit-quiz').classList.remove('hidden');
+      } else {
+        document.getElementById('btn-next-q').classList.remove('hidden');
+        document.getElementById('btn-submit-quiz').classList.add('hidden');
+      }
+
+      renderNavGrid();
+    }
+
+    function selectOption(optIdx) {
+      quizState.userAnswers[quizState.currentIdx] = optIdx;
+      playTone(520, 'sine', 0.1, 0);
+      renderQuestion(quizState.currentIdx);
+    }
+
+    function prevQuestion() {
+      if (quizState.currentIdx > 0) {
+        renderQuestion(quizState.currentIdx - 1);
+      }
+    }
+
+    function nextQuestion() {
+      if (quizState.currentIdx < quizQuestions.length - 1) {
+        renderQuestion(quizState.currentIdx + 1);
+      }
+    }
+
+    function confirmSubmitQuiz() {
+      const unanswered = quizState.userAnswers.filter(a => a === null).length;
+      const modalText = document.getElementById('confirm-modal-text');
+      if (unanswered > 0) {
+        modalText.innerHTML = `Masih ada <strong class="text-rose-600">${unanswered} soal</strong> yang belum dijawab. Apakah kamu yakin ingin mengumpulkan sekarang?`;
+      } else {
+        modalText.innerHTML = `Hebat! Semua <strong>25 soal</strong> sudah kamu jawab. Siap melihat nilai dan rapor KKTP?`;
+      }
+      document.getElementById('submit-confirm-modal').classList.remove('hidden');
+    }
+
+    function closeConfirmModal() {
+      document.getElementById('submit-confirm-modal').classList.add('hidden');
+    }
+
+    function finishQuiz() {
+      closeConfirmModal();
+      if (quizState.timerInterval) clearInterval(quizState.timerInterval);
+
+      let correctCount = 0;
+      quizQuestions.forEach((item, idx) => {
+        if (quizState.userAnswers[idx] === item.answer) {
+          correctCount++;
+        }
+      });
+
+      const wrongCount = quizQuestions.length - correctCount;
+      const finalScore = correctCount * 4; // 25 soal x 4 = 100
+
+      // Tampilkan Halaman Hasil
+      document.getElementById('quiz-active-area').classList.add('hidden');
+      document.getElementById('quiz-result-area').classList.remove('hidden');
+
+      document.getElementById('res-student-name').textContent = quizState.studentName;
+      document.getElementById('res-student-class').textContent = quizState.studentClass;
+      document.getElementById('res-final-score').textContent = finalScore;
+      document.getElementById('res-correct-count').textContent = correctCount;
+      document.getElementById('res-wrong-count').textContent = wrongCount;
+
+      // Penentuan Predikat KKTP Otomatis
+      const kktpBox = document.getElementById('res-kktp-box');
+      const kktpBadge = document.getElementById('res-kktp-badge');
+      const kktpDesc = document.getElementById('res-kktp-desc');
+
+      if (finalScore >= 86) {
+        playSuccessSound();
+        kktpBox.className = 'p-4 rounded-2xl border-2 bg-teal-50 border-teal-400 text-teal-950';
+        kktpBadge.className = 'px-3 py-1 rounded-full text-xs font-extrabold bg-teal-600 text-white';
+        kktpBadge.textContent = 'SANGAT BAIK (TUNTAS)';
+        kktpDesc.textContent = 'MasyaAllah, luar biasa! Kamu sangat menguasai hukum bacaan Ghunnah dengan sangat baik. Pertahankan dan jadilah tutor sebaya bagi teman-temanmu!';
+      } else if (finalScore >= 76) {
+        playSuccessSound();
+        kktpBox.className = 'p-4 rounded-2xl border-2 bg-emerald-50 border-emerald-400 text-emerald-950';
+        kktpBadge.className = 'px-3 py-1 rounded-full text-xs font-extrabold bg-emerald-600 text-white';
+        kktpBadge.textContent = 'BAIK (TUNTAS)';
+        kktpDesc.textContent = 'Alhamdulillah, kamu telah mencapai ketuntasan belajar (KKTP ≥ 76). Kamu sudah memahami pengertian, huruf, dan cara membaca Ghunnah dengan benar.';
+      } else if (finalScore >= 61) {
+        playErrorSound();
+        kktpBox.className = 'p-4 rounded-2xl border-2 bg-amber-50 border-amber-400 text-amber-950';
+        kktpBadge.className = 'px-3 py-1 rounded-full text-xs font-extrabold bg-amber-500 text-white';
+        kktpBadge.textContent = 'CUKUP (PERLU REMEDIAL)';
+        kktpDesc.textContent = 'Tetap semangat! Nilaimu hampir mencapai batas tuntas (76). Pelajari kembali pembahasan soal di bawah ini, lalu coba ulangi kuisnya ya!';
+      } else {
+        playErrorSound();
+        kktpBox.className = 'p-4 rounded-2xl border-2 bg-rose-50 border-rose-400 text-rose-950';
+        kktpBadge.className = 'px-3 py-1 rounded-full text-xs font-extrabold bg-rose-600 text-white';
+        kktpBadge.textContent = 'PERLU BIMBINGAN';
+        kktpDesc.textContent = 'Jangan menyerah! Buka kembali menu "Materi Ghunnah", perhatikan huruf نّ dan مّ, lalu berlatih bersama guru atau orang tua sebelum mengulang kuis.';
+      }
+
+      renderReviewList();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderReviewList() {
+      const letters = ['A', 'B', 'C', 'D'];
+      const container = document.getElementById('review-list');
+      container.innerHTML = quizQuestions.map((item, idx) => {
+        const userAns = quizState.userAnswers[idx];
+        const isCorrect = (userAns === item.answer);
+        const statusBadge = isCorrect
+          ? '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800"><i class="fa-solid fa-check mr-1"></i>Benar (+4)</span>'
+          : '<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-rose-100 text-rose-800"><i class="fa-solid fa-xmark mr-1"></i>Salah (0)</span>';
+
+        const userText = userAns !== null ? `${letters[userAns]}. ${item.options[userAns]}` : 'Tidak dijawab';
+        const correctText = `${letters[item.answer]}. ${item.options[item.answer]}`;
+
+        return `
+          <div class="p-4 rounded-2xl border ${isCorrect ? 'border-emerald-200 bg-emerald-50/30' : 'border-rose-200 bg-rose-50/30'}">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <span class="text-xs font-extrabold text-slate-500">Nomor ${idx + 1}</span>
+              ${statusBadge}
+            </div>
+            <p class="text-sm font-bold text-slate-800 mb-2">${item.q}</p>
+            ${item.arabic ? `<div class="arabic-text text-2xl font-bold text-emerald-950 bg-white px-3 py-2 rounded-xl border border-slate-100 mb-2 text-right">${item.arabic}</div>` : ''}
+            <div class="text-xs space-y-1">
+              <p class="${isCorrect ? 'text-emerald-700' : 'text-rose-700'} font-semibold">Jawaban Kamu: ${userText}</p>
+              ${!isCorrect ? `<p class="text-emerald-800 font-bold">Kunci Jawaban: ${correctText}</p>` : ''}
+              <p class="text-slate-600 bg-white p-2.5 rounded-xl border border-slate-100 mt-1.5">
+                <strong class="text-emerald-800">Pembahasan:</strong> ${item.explanation}
+              </p>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleReviewSection() {
+      const rev = document.getElementById('quiz-review-container');
+      rev.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function resetQuiz() {
+      document.getElementById('quiz-result-area').classList.add('hidden');
+      document.getElementById('quiz-intro-card').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Inisialisasi saat halaman dimuat
+    window.addEventListener('DOMContentLoaded', () => {
+      renderQuranExamples();
+    });
+  </script>
+</body>
+</html>
